@@ -1,4 +1,4 @@
-package com.zarisa.dictionaryapp
+package com.zarisa.dictionaryapp.data_base
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

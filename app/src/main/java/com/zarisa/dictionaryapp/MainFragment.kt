@@ -28,7 +28,6 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.title = "Dictionary"
         viewModel.wordCounterLiveData.observe(viewLifecycleOwner){
             binding.textViewWordsCounter.text= it?.toString() ?: "0"
         }

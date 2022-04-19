@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
             it.animate().setDuration(3000).alpha(1f).withEndAction {
                 binding.fragmentContainerView.visibility = View.VISIBLE
                 binding.iconSplashScreen.visibility = View.GONE
+                supportActionBar?.show()
                 overridePendingTransition(
                     android.R.anim.fade_in,
                     android.R.anim.fade_out

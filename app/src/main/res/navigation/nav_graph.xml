@@ -9,5 +9,31 @@
         android:id="@+id/mainFragment"
         android:name="com.zarisa.dictionaryapp.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_addWordFragment"
+            app:destination="@id/addWordFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_wordDetailFragment"
+            app:destination="@id/wordDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addWordFragment"
+        android:name="com.zarisa.dictionaryapp.AddWordFragment"
+        android:label="fragment_add_word"
+        tools:layout="@layout/fragment_add_word" />
+    <fragment
+        android:id="@+id/wordDetailFragment"
+        android:name="com.zarisa.dictionaryapp.WordDetailFragment"
+        android:label="fragment_word_detail"
+        tools:layout="@layout/fragment_word_detail" >
+        <action
+            android:id="@+id/action_wordDetailFragment_to_editWordFragment"
+            app:destination="@id/editWordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editWordFragment"
+        android:name="com.zarisa.dictionaryapp.EditWordFragment"
+        android:label="fragment_edit_word"
+        tools:layout="@layout/fragment_edit_word" />
 </navigation>

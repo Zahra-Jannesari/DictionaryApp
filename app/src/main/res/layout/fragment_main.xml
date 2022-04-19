@@ -63,7 +63,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_wordCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Words Count / تعداد کلمات"
@@ -75,15 +75,15 @@
         app:layout_constraintVertical_bias="0.13" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView_wordsCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/tv_wordCount"
+        app:layout_constraintStart_toStartOf="@+id/tv_wordCount"
+        app:layout_constraintTop_toBottomOf="@+id/tv_wordCount"
         app:layout_constraintVertical_bias="0.110000014" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

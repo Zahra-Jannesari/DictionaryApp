@@ -8,7 +8,6 @@ import com.zarisa.dictionaryapp.data_base.Word
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
     lateinit var wordCounterLiveData: LiveData<Int>
-    lateinit var searchedWord:Word
     init {
         Repository.initDB(app.applicationContext)
         updateWordCounter()
@@ -21,5 +20,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
     fun addWord(word: Word){
         Repository.addWord(word)
+    }
+    fun deleteWord(word:Word){
+        Repository.delete(word)
     }
 }

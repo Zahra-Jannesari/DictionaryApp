@@ -20,4 +20,7 @@ object Repository {
     fun addWord(word: Word){
         wordDao.insertOrUpdate(word)
     }
+    fun delete(word:Word){
+        wordDao.deleteWord(word)
+    }
 }

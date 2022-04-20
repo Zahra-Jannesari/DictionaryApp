@@ -5,55 +5,78 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.zarisa.dictionaryapp.data_base.Word
+import com.zarisa.dictionaryapp.databinding.FragmentWordDetailBinding
+import com.zarisa.dictionaryapp.model.MainViewModel
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [WordDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class WordDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    lateinit var binding: FragmentWordDetailBinding
+    val viewModel: MainViewModel by viewModels()
+    lateinit var searchedWord: Word
+    var editTime = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_word_detail, container, false)
+    ): View {
+        binding = FragmentWordDetailBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WordDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WordDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getWord(requireArguments().getString("word", ""))?.let {
+            searchedWord = it
+        }
+        putDataInEditTexts()
+        onClicks()
+    }
+
+    private fun onClicks() {
+        binding.btnEdit.setOnClickListener {
+            if (!editTime) {
+                changeEnable(true)
+                editTime = true
+                Toast.makeText(requireContext(), "Start editing.", Toast.LENGTH_SHORT).show()
+            } else {
+                changeEnable(false)
+                editTime = false
+                val editedWord = Word(
+                    binding.EditTextEnglishWord.text.toString().lowercase(Locale.getDefault()),
+                    binding.EditTextPersianWord.text.toString().lowercase(Locale.getDefault()),
+                    binding.EditTextExample.text.toString(),
+                    binding.EditTextSynonym.text.toString()
+                )
+                viewModel.addWord(editedWord)
+                Toast.makeText(
+                    requireContext(),
+                    "Word updated.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+        }
+        binding.btnDelete.setOnClickListener {
+            viewModel.deleteWord(searchedWord)
+            Toast.makeText(requireContext(), "Word deleted!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_wordDetailFragment_to_mainFragment)
+        }
+    }
+
+    private fun changeEnable(requireState: Boolean) {
+        binding.EditTextEnglishWord.isEnabled = requireState
+        binding.EditTextPersianWord.isEnabled = requireState
+        binding.EditTextExample.isEnabled = requireState
+        binding.EditTextSynonym.isEnabled = requireState
+    }
+
+    private fun putDataInEditTexts() {
+        binding.EditTextEnglishWord.setText(searchedWord.englishWord)
+        binding.EditTextPersianWord.setText(searchedWord.persianWord)
+        binding.EditTextExample.setText(searchedWord.example)
+        binding.EditTextSynonym.setText(searchedWord.synonym)
     }
 }

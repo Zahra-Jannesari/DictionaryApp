@@ -37,11 +37,10 @@ class MainFragment : Fragment() {
 
     private fun onClicks() {
         binding.textFieldSearch.setEndIconOnClickListener {
-            val searchedWord = viewModel.getWord(binding.editTextSearch.text.toString()
-                .lowercase(Locale.getDefault()))
-            if (searchedWord != null) {
-                viewModel.searchedWord=searchedWord
-                findNavController().navigate(R.id.action_mainFragment_to_wordDetailFragment)
+            val searchedWord = binding.editTextSearch.text.toString().lowercase(Locale.getDefault())
+            if (viewModel.getWord(searchedWord) != null) {
+                var bundle= bundleOf("word" to searchedWord)
+                findNavController().navigate(R.id.action_mainFragment_to_wordDetailFragment,bundle)
             } else {
                 MaterialAlertDialogBuilder(requireContext())
                     .setMessage("The word you are looking for has not registered before." +

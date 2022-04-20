@@ -2,11 +2,12 @@ package com.zarisa.dictionaryapp.model
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.zarisa.dictionaryapp.data_base.Word
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
-    val wordCounterLiveData=MutableLiveData<Int>(0)
+    lateinit var wordCounterLiveData: LiveData<Int>
     lateinit var searchedWord:Word
     init {
         Repository.initDB(app.applicationContext)
@@ -16,7 +17,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return Repository.getWord(word)
     }
     fun updateWordCounter(){
-        wordCounterLiveData.value=Repository.getCountOfWords().value
+        wordCounterLiveData=Repository.getCountOfWords()
     }
     fun addWord(word: Word){
         Repository.addWord(word)

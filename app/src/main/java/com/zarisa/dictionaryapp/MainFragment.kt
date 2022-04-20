@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zarisa.dictionaryapp.databinding.FragmentMainBinding
 import com.zarisa.dictionaryapp.model.MainViewModel
+import java.util.*
 
 
 class MainFragment : Fragment() {
@@ -36,10 +37,11 @@ class MainFragment : Fragment() {
 
     private fun onClicks() {
         binding.textFieldSearch.setEndIconOnClickListener {
-            val searchedWord = viewModel.getWord(binding.editTextSearch.text.toString())
+            val searchedWord = viewModel.getWord(binding.editTextSearch.text.toString()
+                .lowercase(Locale.getDefault()))
             if (searchedWord != null) {
-                var word = bundleOf("word" to searchedWord)
-                findNavController().navigate(R.id.action_wordDetailFragment_to_editWordFragment, word)
+                viewModel.searchedWord=searchedWord
+                findNavController().navigate(R.id.action_mainFragment_to_wordDetailFragment)
             } else {
                 MaterialAlertDialogBuilder(requireContext())
                     .setMessage("The word you are looking for has not registered before." +

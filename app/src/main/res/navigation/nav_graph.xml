@@ -28,15 +28,7 @@
         android:label="fragment_word_detail"
         tools:layout="@layout/fragment_word_detail" >
         <action
-            android:id="@+id/action_wordDetailFragment_to_editWordFragment"
-            app:destination="@id/editWordFragment" />
-        <action
             android:id="@+id/action_wordDetailFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/editWordFragment"
-        android:name="com.zarisa.dictionaryapp.EditWordFragment"
-        android:label="fragment_edit_word"
-        tools:layout="@layout/fragment_edit_word" />
 </navigation>

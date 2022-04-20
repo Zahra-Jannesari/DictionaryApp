@@ -17,4 +17,7 @@ object Repository {
     fun getWord(word:String):Word?{
         return wordDao.getWord(word)
     }
+    fun addWord(word: Word){
+        wordDao.insertOrUpdate(word)
+    }
 }

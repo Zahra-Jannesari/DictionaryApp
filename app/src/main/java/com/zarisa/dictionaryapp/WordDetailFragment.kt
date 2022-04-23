@@ -49,6 +49,8 @@ class WordDetailFragment : Fragment() {
                     binding.EditTextEnglishWord.text.toString().lowercase(Locale.getDefault()),
                     binding.EditTextPersianWord.text.toString().lowercase(Locale.getDefault()),
                     binding.EditTextExample.text.toString(),
+                    binding.EditTextSynonym.text.toString(),
+                    binding.EditTextExample.text.toString(),
                     binding.EditTextSynonym.text.toString()
                 )
                 viewModel.addWord(editedWord)

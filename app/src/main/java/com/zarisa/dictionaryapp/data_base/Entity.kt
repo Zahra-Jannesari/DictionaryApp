@@ -10,5 +10,5 @@ data class Word(
     var example: String,
     var synonym: String,
     var wikiLink: String,
-    var pronunciation:String
+    var pronunciation:String?
 )

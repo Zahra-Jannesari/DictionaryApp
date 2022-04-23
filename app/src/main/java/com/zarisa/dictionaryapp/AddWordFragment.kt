@@ -1,21 +1,56 @@
 package com.zarisa.dictionaryapp
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.media.MediaRecorder
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.zarisa.dictionaryapp.data_base.Word
 import com.zarisa.dictionaryapp.databinding.FragmentAddWordBinding
 import com.zarisa.dictionaryapp.model.MainViewModel
+import java.io.IOException
 import java.util.*
-
+private const val LOG_TAG = "AudioRecordTest"
 class AddWordFragment : Fragment() {
-
     private lateinit var binding: FragmentAddWordBinding
     val viewModel: MainViewModel by viewModels()
+    var isAudioRecording = false
+    var recordPermissionGranted = false
+    var fileName = ""
+    var didPronounceRecorde = false
+    private var recorder: MediaRecorder? = null
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                Toast.makeText(
+                    requireContext(),
+                    "Permission granted.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                recordPermissionGranted = true
+                startRecording()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Permission denied.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,8 +61,88 @@ class AddWordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fileName = "${activity?.externalCacheDir?.absolutePath}/${Calendar.getInstance().time}.3gp"
+        binding.fieldAudio.setEndIconOnClickListener {
+            requestPermissions()
+            if (!isAudioRecording && recordPermissionGranted) {
+                startRecording()
+            }else if (isAudioRecording) {
+                stopRecording()
+            }
+        }
         binding.btnSave.setOnClickListener {
             saveWordInDataBase()
+        }
+    }
+
+    private fun requestPermissions() {
+        when {
+            //if user already granted the permission
+            ContextCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                recordPermissionGranted = true
+            }
+            //if user already denied the permission once
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.RECORD_AUDIO
+            ) -> {
+                //you can show rational massage in any form you want
+                return showRationDialog()
+            }
+            else -> {
+                requestPermissionLauncher.launch(
+                    Manifest.permission.RECORD_AUDIO,
+                )
+            }
+        }
+    }
+
+    private fun showRationDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.apply {
+            setMessage("We need to use microphone to record pronunciation for this word.")
+            setTitle("permission required")
+            setPositiveButton("ok") { _, _ ->
+                requestPermissionLauncher.launch(
+                    Manifest.permission.RECORD_AUDIO,
+                )
+            }
+        }
+        builder.create().show()
+    }
+
+    private fun stopRecording() {
+        binding.fieldAudio.endIconDrawable =
+            resources.getDrawable(R.drawable.ic_baseline_mic_none_24)
+        isAudioRecording=false
+        recorder?.apply {
+            stop()
+            release()
+        }
+        recorder = null
+    }
+
+    private fun startRecording() {
+        didPronounceRecorde = true
+        binding.fieldAudio.endIconDrawable =
+            resources.getDrawable(R.drawable.ic_baseline_mic_24)
+        isAudioRecording=true
+        recorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            setOutputFile(fileName)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+
+            try {
+                prepare()
+            } catch (e: IOException) {
+                Log.e(LOG_TAG, "prepare() failed")
+            }
+
+            start()
         }
     }
 
@@ -37,7 +152,9 @@ class AddWordFragment : Fragment() {
                 binding.EditTextEnglishWord.text.toString().lowercase(Locale.getDefault()),
                 binding.EditTextPersianWord.text.toString().lowercase(Locale.getDefault()),
                 binding.EditTextExample.text.toString(),
-                binding.EditTextSynonym.text.toString()
+                binding.EditTextSynonym.text.toString(),
+                binding.EditTextWikiLink.text.toString(),
+                if (didPronounceRecorde) fileName else ""
             )
             viewModel.addWord(userWord)
             Toast.makeText(

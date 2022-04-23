@@ -55,7 +55,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,7 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,9 +103,41 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <ProgressBar
+                        android:id="@+id/progressBar_audio"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/buttonPlay"
+                        app:layout_constraintEnd_toStartOf="@+id/buttonPlay"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/buttonPlay"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/buttonPlay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
+                        android:src="@drawable/ic_baseline_play_arrow_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/progressBar_audio"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="SpeakableTextPresentCheck" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -119,8 +151,8 @@
                         style="?attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="delete"
                         android:layout_marginEnd="8dp"
+                        android:text="delete"
                         android:textSize="20sp" />
 
                     <Button
@@ -128,8 +160,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Edit"
-                        android:textSize="20sp"
-                        />
+                        android:textSize="20sp" />
                 </LinearLayout>
 
             </LinearLayout>

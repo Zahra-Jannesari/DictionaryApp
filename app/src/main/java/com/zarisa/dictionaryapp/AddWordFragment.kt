@@ -21,7 +21,7 @@ import com.zarisa.dictionaryapp.model.MainViewModel
 import java.io.IOException
 import java.util.*
 
-private const val LOG_TAG = "AudioRecordTest"
+const val LOG_TAG = "AudioRecordTest"
 
 class AddWordFragment : Fragment() {
     private lateinit var binding: FragmentAddWordBinding

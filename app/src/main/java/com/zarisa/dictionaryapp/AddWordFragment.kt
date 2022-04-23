@@ -3,7 +3,6 @@ package com.zarisa.dictionaryapp
 import android.Manifest
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -21,7 +20,9 @@ import com.zarisa.dictionaryapp.databinding.FragmentAddWordBinding
 import com.zarisa.dictionaryapp.model.MainViewModel
 import java.io.IOException
 import java.util.*
+
 private const val LOG_TAG = "AudioRecordTest"
+
 class AddWordFragment : Fragment() {
     private lateinit var binding: FragmentAddWordBinding
     val viewModel: MainViewModel by viewModels()
@@ -62,11 +63,15 @@ class AddWordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fileName = "${activity?.externalCacheDir?.absolutePath}/${Calendar.getInstance().time}.3gp"
+        onClicks()
+    }
+
+    private fun onClicks() {
         binding.fieldAudio.setEndIconOnClickListener {
             requestPermissions()
             if (!isAudioRecording && recordPermissionGranted) {
                 startRecording()
-            }else if (isAudioRecording) {
+            } else if (isAudioRecording) {
                 stopRecording()
             }
         }
@@ -89,13 +94,10 @@ class AddWordFragment : Fragment() {
                 requireActivity(),
                 Manifest.permission.RECORD_AUDIO
             ) -> {
-                //you can show rational massage in any form you want
-                return showRationDialog()
+                showRationDialog()
             }
             else -> {
-                requestPermissionLauncher.launch(
-                    Manifest.permission.RECORD_AUDIO,
-                )
+                requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
         }
     }
@@ -117,7 +119,7 @@ class AddWordFragment : Fragment() {
     private fun stopRecording() {
         binding.fieldAudio.endIconDrawable =
             resources.getDrawable(R.drawable.ic_baseline_mic_none_24)
-        isAudioRecording=false
+        isAudioRecording = false
         recorder?.apply {
             stop()
             release()
@@ -129,7 +131,7 @@ class AddWordFragment : Fragment() {
         didPronounceRecorde = true
         binding.fieldAudio.endIconDrawable =
             resources.getDrawable(R.drawable.ic_baseline_mic_24)
-        isAudioRecording=true
+        isAudioRecording = true
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)

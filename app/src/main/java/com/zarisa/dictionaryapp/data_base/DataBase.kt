@@ -10,7 +10,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun wordDao(): WordDao
 
     companion object {
-        @Volatile
         var INSTANCE: AppDatabase? = null
         fun getAppDataBase(context: Context): AppDatabase {
             val _Instance = INSTANCE

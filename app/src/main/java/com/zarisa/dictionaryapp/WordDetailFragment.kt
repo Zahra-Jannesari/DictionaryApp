@@ -23,8 +23,9 @@ class WordDetailFragment : Fragment() {
     val viewModel: MainViewModel by viewModels()
     lateinit var searchedWord: Word
     var editTime = false
-    var mediaPlayer: MediaPlayer?=null
+    var mediaPlayer: MediaPlayer? = null
     var url: String? = ""
+    var readMoreIsOpen = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -98,6 +99,36 @@ class WordDetailFragment : Fragment() {
 //            mediaPlayer.release()
             binding.buttonPlay.setImageResource(R.drawable.ic_baseline_play_arrow_24)
         }
+        binding.btnReadMore.setOnClickListener {
+            linkProcess()
+        }
+    }
+
+    private fun linkProcess() {
+        if (!readMoreIsOpen) {
+            searchedWord.wikiLink.let {
+                if (it.isNullOrBlank())
+                    Toast.makeText(requireContext(), "There is no more details", Toast.LENGTH_SHORT)
+                        .show()
+                else {
+                    binding.webView.loadUrl(it)
+                    binding.btnReadMore.apply {
+                        this.text = "read less"
+                        this.icon =
+                            resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24)
+                    }
+                    binding.webView.visibility = View.VISIBLE
+                    readMoreIsOpen = true
+                }
+            }
+        } else if (readMoreIsOpen) {
+            binding.btnReadMore.apply {
+                this.text = "read more"
+                this.icon = resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24)
+            }
+            binding.webView.visibility = View.GONE
+            readMoreIsOpen = false
+        }
     }
 
     private fun pauseAudio() {
@@ -106,7 +137,7 @@ class WordDetailFragment : Fragment() {
     }
 
     private fun playAudio() {
-        if (mediaPlayer==null) {
+        if (mediaPlayer == null) {
             Toast.makeText(
                 requireContext(),
                 "There is no recorded pronunciation for this word.",

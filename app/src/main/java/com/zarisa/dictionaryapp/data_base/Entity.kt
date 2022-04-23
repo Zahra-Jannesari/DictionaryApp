@@ -8,5 +8,7 @@ data class Word(
     @PrimaryKey var englishWord: String,
     var persianWord: String,
     var example: String,
-    var synonym: String
+    var synonym: String,
+    var wikiLink: String,
+    var pronunciation:String
 )

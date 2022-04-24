@@ -63,12 +63,12 @@ class AddWordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fileName = "${activity?.externalCacheDir?.absolutePath}/${Calendar.getInstance().time}.3gp"
         onClicks()
     }
 
     private fun onClicks() {
         binding.fieldAudio.setEndIconOnClickListener {
+            fileName = "${activity?.externalCacheDir?.absolutePath}/${Calendar.getInstance().time}.3gp"
             requestPermissions()
             if (!isAudioRecording && recordPermissionGranted) {
                 startRecording()
@@ -144,7 +144,6 @@ class AddWordFragment : Fragment() {
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
             setOutputFile(fileName)
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-
             try {
                 prepare()
             } catch (e: IOException) {
@@ -167,6 +166,7 @@ class AddWordFragment : Fragment() {
                 binding.buttonFavorite.isSelected
             )
             viewModel.addWord(userWord)
+            clearPage()
             Toast.makeText(
                 requireContext(),
                 "New word added.",
@@ -179,6 +179,16 @@ class AddWordFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun clearPage() {
+        binding.EditTextEnglishWord.setText("")
+        binding.EditTextPersianWord.setText("")
+        binding.EditTextExample.setText("")
+        binding.EditTextSynonym.setText("")
+        binding.EditTextWikiLink.setText("")
+        fileName=""
+        binding.buttonFavorite.isSelected = false
     }
 
     private fun dataIsValid(): Boolean {
@@ -196,26 +206,5 @@ class AddWordFragment : Fragment() {
             }
         }
         return isValid
-
-
-//     else {
-//        if ((view as ImageButton).isSelected) {
-//            if (addFav.contains(view.id.toString()))
-//                addFav.remove(view.id.toString())
-//            delFav.add(view.id.toString())
-//            view.setSelected(false)
-//        } else {
-//            if (delFav.contains(view.id.toString()))
-//                delFav.remove(view.id.toString())
-//            addFav.add(view.id.toString())
-//            view.setSelected(true)
-//        }
-//
-//
-//        favList.addAll(addFav)
-//        favList.removeAll(delFav)
-//
-//    }
-
     }
 }

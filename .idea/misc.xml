@@ -8,8 +8,9 @@
         <entry key="..\:/Users/FIX4U.IR/DictionaryApp/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.2" />
         <entry key="..\:/Users/FIX4U.IR/DictionaryApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/FIX4U.IR/DictionaryApp/app/src/main/res/layout/fragment_add_word.xml" value="0.33" />
-        <entry key="..\:/Users/FIX4U.IR/DictionaryApp/app/src/main/res/layout/fragment_main.xml" value="0.21" />
+        <entry key="..\:/Users/FIX4U.IR/DictionaryApp/app/src/main/res/layout/fragment_main.xml" value="0.5" />
         <entry key="..\:/Users/FIX4U.IR/DictionaryApp/app/src/main/res/layout/fragment_word_detail.xml" value="0.33" />
+        <entry key="..\:/Users/FIX4U.IR/DictionaryApp/app/src/main/res/layout/fragment_word_list.xml" value="0.1921875" />
       </map>
     </option>
   </component>

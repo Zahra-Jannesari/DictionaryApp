@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -77,6 +78,12 @@ class AddWordFragment : Fragment() {
         }
         binding.btnSave.setOnClickListener {
             saveWordInDataBase()
+        }
+        binding.buttonFavorite.setOnClickListener {
+            if ((it as ImageButton).isSelected)
+                it.setSelected(false)
+            else
+                it.setSelected(true)
         }
     }
 
@@ -156,7 +163,8 @@ class AddWordFragment : Fragment() {
                 binding.EditTextExample.text.toString(),
                 binding.EditTextSynonym.text.toString(),
                 binding.EditTextWikiLink.text.toString(),
-                if (didPronounceRecorde) fileName else ""
+                if (didPronounceRecorde) fileName else "",
+                binding.buttonFavorite.isSelected
             )
             viewModel.addWord(userWord)
             Toast.makeText(
@@ -188,5 +196,26 @@ class AddWordFragment : Fragment() {
             }
         }
         return isValid
+
+
+//     else {
+//        if ((view as ImageButton).isSelected) {
+//            if (addFav.contains(view.id.toString()))
+//                addFav.remove(view.id.toString())
+//            delFav.add(view.id.toString())
+//            view.setSelected(false)
+//        } else {
+//            if (delFav.contains(view.id.toString()))
+//                delFav.remove(view.id.toString())
+//            addFav.add(view.id.toString())
+//            view.setSelected(true)
+//        }
+//
+//
+//        favList.addAll(addFav)
+//        favList.removeAll(delFav)
+//
+//    }
+
     }
 }

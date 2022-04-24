@@ -108,7 +108,7 @@ class WordDetailFragment : Fragment() {
         if (!readMoreIsOpen) {
             searchedWord.wikiLink.let {
                 if (it.isNullOrBlank())
-                    Toast.makeText(requireContext(), "There is no more details", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), "There is no more details.", Toast.LENGTH_SHORT)
                         .show()
                 else {
                     binding.webView.loadUrl(it)

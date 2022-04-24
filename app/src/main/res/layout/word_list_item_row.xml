@@ -12,6 +12,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/item_englishWord"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -26,6 +27,7 @@
                 android:background="?attr/colorPrimary" />
 
             <TextView
+                android:id="@+id/item_persianWord"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

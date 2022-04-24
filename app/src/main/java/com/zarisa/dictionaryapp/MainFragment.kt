@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.zarisa.dictionaryapp.adapters.WordListAdapter
 import com.zarisa.dictionaryapp.databinding.FragmentMainBinding
 import com.zarisa.dictionaryapp.model.MainViewModel
 import java.util.*
@@ -18,11 +19,13 @@ import java.util.*
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    val wordListAdapter=WordListAdapter()
     val viewModel:MainViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+//        LayoutInflater.from(requireContext())
         binding = FragmentMainBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -32,6 +35,8 @@ class MainFragment : Fragment() {
         viewModel.wordCounterLiveData.observe(viewLifecycleOwner){
             binding.textViewWordsCounter.text= it?.toString() ?: "0"
         }
+        binding.recyclerview.adapter=wordListAdapter
+        wordListAdapter.setDate(viewModel.getWordsList())
         onClicks()
     }
 

@@ -2,6 +2,7 @@ package com.zarisa.dictionaryapp.data_base
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.zarisa.dictionaryapp.model.Repository
 
 @Dao
 interface WordDao{
@@ -9,6 +10,8 @@ interface WordDao{
     fun getWord(word:String):Word?
     @Query("SELECT count(*) FROM Word")
     fun getCountOfWords():LiveData<Int>
+    @Query("SELECT * From Word")
+    fun getWordsList():List<Word>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(word:Word)
 //    @Query("REPLACE Into Word with ")

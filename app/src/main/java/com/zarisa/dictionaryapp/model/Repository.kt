@@ -23,4 +23,7 @@ object Repository {
     fun delete(word:Word){
         wordDao.deleteWord(word)
     }
+    fun getWordsList():List<Word>{
+        return wordDao.getWordsList()
+    }
 }

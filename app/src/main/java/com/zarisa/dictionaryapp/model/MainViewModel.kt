@@ -24,4 +24,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun deleteWord(word:Word){
         Repository.delete(word)
     }
+    fun getWordsList():List<Word>{
+        return Repository.getWordsList()
+    }
 }

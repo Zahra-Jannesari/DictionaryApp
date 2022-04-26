@@ -19,7 +19,9 @@ import java.util.*
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
-    val wordListAdapter=WordListAdapter()
+    val wordListAdapter=WordListAdapter(){
+        it->goToWordDetailFragment(it)
+    }
     val viewModel:MainViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,13 +41,15 @@ class MainFragment : Fragment() {
         wordListAdapter.setDate(viewModel.getWordsList())
         onClicks()
     }
-
+    fun goToWordDetailFragment(word:String){
+        var bundle= bundleOf("word" to word)
+        findNavController().navigate(R.id.action_mainFragment_to_wordDetailFragment,bundle)
+    }
     private fun onClicks() {
         binding.textFieldSearch.setEndIconOnClickListener {
             val searchedWord = binding.editTextSearch.text.toString().lowercase(Locale.getDefault())
             if (viewModel.getWord(searchedWord) != null) {
-                var bundle= bundleOf("word" to searchedWord)
-                findNavController().navigate(R.id.action_mainFragment_to_wordDetailFragment,bundle)
+                goToWordDetailFragment(searchedWord)
             } else {
                 MaterialAlertDialogBuilder(requireContext())
                     .setMessage("The word you are looking for has not registered before." +

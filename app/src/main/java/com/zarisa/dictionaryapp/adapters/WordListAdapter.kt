@@ -5,14 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zarisa.dictionaryapp.data_base.Word
 import com.zarisa.dictionaryapp.databinding.WordListItemRowBinding
-
-class WordListAdapter(var wordList: MutableList<Word> = mutableListOf()) : RecyclerView.Adapter<WordListAdapter.Holder>() {
+typealias goToDetail=(word:String)->Unit
+class WordListAdapter(var wordList: MutableList<Word> = mutableListOf(),var onItemClick:goToDetail) : RecyclerView.Adapter<WordListAdapter.Holder>() {
     inner class Holder(val binding: WordListItemRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Word) {
             try {
                 binding.itemEnglishWord.text = item.englishWord
                 binding.itemPersianWord.text = item.persianWord
+                binding.root.setOnClickListener {
+                    onItemClick(item.englishWord)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -150,6 +150,8 @@ class WordDetailFragment : Fragment() {
                     start()
                 }
                 binding.buttonPlay.setImageResource(R.drawable.ic_baseline_pause_24)
+                mediaPlayer?.duration?.let{binding.progressBarAudio.max=it}
+                mediaPlayer?.currentPosition?.let{binding.progressBarAudio.progress=it}
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),

@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Word(
-    @PrimaryKey var englishWord: String,
+    @PrimaryKey(autoGenerate = true) val wordId:Int,
+    var englishWord: String,
     var persianWord: String,
     var example: String,
     var synonym: String,

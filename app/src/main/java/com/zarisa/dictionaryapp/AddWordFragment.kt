@@ -15,7 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.zarisa.dictionaryapp.data_base.Word
 import com.zarisa.dictionaryapp.databinding.FragmentAddWordBinding
 import com.zarisa.dictionaryapp.model.MainViewModel
@@ -26,12 +28,13 @@ const val LOG_TAG = "AudioRecordTest"
 
 class AddWordFragment : Fragment() {
     private lateinit var binding: FragmentAddWordBinding
-    val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
     var isAudioRecording = false
     var recordPermissionGranted = false
     var fileName = ""
     var didPronounceRecorde = false
     private var recorder: MediaRecorder? = null
+    var editingWord: Word? = null
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -63,12 +66,25 @@ class AddWordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (requireArguments().getBoolean(EDIT, false)) {
+            editingWord = viewModel.getWordById(requireArguments().getInt(WORDID, 0))
+            putDataForEdit()
+        }
         onClicks()
+    }
+
+    private fun putDataForEdit() {
+        binding.EditTextEnglishWord.setText(editingWord?.englishWord)
+        binding.EditTextPersianWord.setText(editingWord?.persianWord)
+        binding.EditTextExample.setText(editingWord?.example)
+        binding.EditTextSynonym.setText(editingWord?.synonym)
+        binding.EditTextWikiLink.setText(editingWord?.wikiLink)
     }
 
     private fun onClicks() {
         binding.fieldAudio.setEndIconOnClickListener {
-            fileName = "${activity?.externalCacheDir?.absolutePath}/${Calendar.getInstance().time}.3gp"
+            fileName = "${activity?.externalCacheDir?.absolutePath}/${Calendar.getInstance().time}.mp3"
             requestPermissions()
             if (!isAudioRecording && recordPermissionGranted) {
                 startRecording()
@@ -157,6 +173,7 @@ class AddWordFragment : Fragment() {
     private fun saveWordInDataBase() {
         if (dataIsValid()) {
             var userWord = Word(
+                editingWord?.wordId ?: (viewModel.getWordListSize()+1),
                 binding.EditTextEnglishWord.text.toString().lowercase(Locale.getDefault()),
                 binding.EditTextPersianWord.text.toString().lowercase(Locale.getDefault()),
                 binding.EditTextExample.text.toString(),
@@ -165,6 +182,17 @@ class AddWordFragment : Fragment() {
                 if (didPronounceRecorde) fileName else "",
                 binding.buttonFavorite.isSelected
             )
+            if (editingWord != null) {
+                viewModel.updateWord(userWord)
+                val bundle = bundleOf(
+                    WORDID to editingWord!!.wordId
+                )
+                findNavController().navigate(
+                    R.id.action_addWordFragment_to_wordDetailFragment,
+                    bundle
+                )
+                return
+            }
             viewModel.addWord(userWord)
             clearPage()
             Toast.makeText(
@@ -187,7 +215,7 @@ class AddWordFragment : Fragment() {
         binding.EditTextExample.setText("")
         binding.EditTextSynonym.setText("")
         binding.EditTextWikiLink.setText("")
-        fileName=""
+        fileName = ""
         binding.buttonFavorite.isSelected = false
     }
 

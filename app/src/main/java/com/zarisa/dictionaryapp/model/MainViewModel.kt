@@ -3,7 +3,6 @@ package com.zarisa.dictionaryapp.model
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.zarisa.dictionaryapp.data_base.Word
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
@@ -26,5 +25,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
     fun getWordsList():List<Word>{
         return Repository.getWordsList()
+    }
+    fun updateWord(word:Word){
+        Repository.updateWord(word)
+    }
+
+    fun getWordListSize(): Int {
+        return Repository.getWordListSize()
+    }
+    fun getWordById(wordID:Int):Word{
+        return Repository.getWordById(wordID)
     }
 }

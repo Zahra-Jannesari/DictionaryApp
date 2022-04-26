@@ -45,7 +45,7 @@
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="New word"
+                        android:text="Word"
                         android:textAppearance="?attr/textAppearanceHeadline6"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/button_favorite"

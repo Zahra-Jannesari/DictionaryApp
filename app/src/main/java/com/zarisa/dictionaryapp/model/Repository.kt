@@ -7,7 +7,7 @@ import com.zarisa.dictionaryapp.data_base.Word
 import com.zarisa.dictionaryapp.data_base.WordDao
 
 object Repository {
-    lateinit var wordDao  : WordDao
+    private lateinit var wordDao  : WordDao
     fun initDB(context : Context){
         wordDao = AppDatabase.getAppDataBase(context).wordDao()
     }
@@ -18,12 +18,23 @@ object Repository {
         return wordDao.getWord(word)
     }
     fun addWord(word: Word){
-        wordDao.insertOrUpdate(word)
+        wordDao.insert(word)
     }
     fun delete(word:Word){
         wordDao.deleteWord(word)
     }
     fun getWordsList():List<Word>{
         return wordDao.getWordsList()
+    }
+    fun updateWord(word: Word){
+        wordDao.updateWord(word)
+    }
+
+    fun getWordListSize():Int {
+        return wordDao.wordListSize()
+    }
+
+    fun getWordById(wordID: Int): Word {
+        return wordDao.getWordById(wordID)
     }
 }

@@ -11,8 +11,9 @@ class WordListAdapter(var wordList: MutableList<Word> = mutableListOf(),var onIt
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Word) {
             try {
-                binding.itemEnglishWord.text = item.englishWord
-                binding.itemPersianWord.text = item.persianWord
+//                binding.itemEnglishWord.text = item.englishWord
+//                binding.itemPersianWord.text = item.persianWord
+                binding.word=item
                 binding.root.setOnClickListener {
                     onItemClick(item.wordId)
                 }
